@@ -427,6 +427,9 @@ if not exist CFZ-Caching git clone https://github.com/patientx/CFZ-Caching %QQ%
 if not exist ComfyUI-HFRemoteVae git clone https://github.com/kijai/ComfyUI-HFRemoteVae %QQ%
 cd ..
 
+:: diffusers install for hfremotevae
+.\python_env\python.exe -m pip install diffusers %QQ%
+
 echo [*] Installing triton - sageattention(v1)
 .\python_env\python.exe -m pip install triton-windows==3.6.0.post25 %QQ%
 if errorlevel 1 goto :install_failed
