@@ -213,7 +213,7 @@ if "!arch!"=="gfx103X" (
         echo [!] Warning: rocm-sdk init failed, continuing anyway...
     )
 	echo [*] Installing PyTorch for RDNA2 ^(gfx103X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx103X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
+    .\python_env\python.exe -m pip install --pre --index-url https://rocm.nightlies.amd.com/v2-staging/gfx103X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
     if errorlevel 1 goto :install_failed
     goto :install_requirements
 )
