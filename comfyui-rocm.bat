@@ -2,6 +2,13 @@
 setlocal enabledelayedexpansion
 title [comfyui-rocm]
 
+:: read installed version from hash file
+set "HASH_FILE=%~dp0.last_update_hash"
+set "VERSION=unknown"
+if exist "!HASH_FILE!" set /p VERSION=<"!HASH_FILE!"
+set "VERSION=!VERSION:~0,10!"
+title [comfyui-rocm] - !VERSION!
+
 :: paths
 set "PYTHON_DIR=%~dp0python_env"
 set "PATH=%PYTHON_DIR%;%PYTHON_DIR%\Scripts;%PATH%"
@@ -85,7 +92,7 @@ if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
 
 :: ------------------------------------------------------------------------------------- ::
 
-echo ::: [comfyui-rocm] starting with these parameters ::: 
+echo ::: [comfyui-rocm] [version: !VERSION!] is starting with these parameters ::: 
 echo [ !PARAMS! ]
 echo.
 python_env\python.exe main.py %PARAMS%
