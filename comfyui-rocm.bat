@@ -93,7 +93,7 @@ if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
 :: ------------------------------------------------------------------------------------- ::
 
 echo ::: [comfyui-rocm] [version: !VERSION!] is starting with these parameters ::: 
-echo [ !PARAMS! ]
+echo ::: [ !PARAMS! ] :::
 echo.
 python_env\python.exe main.py %PARAMS%
 
