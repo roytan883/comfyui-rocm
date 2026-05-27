@@ -33,8 +33,7 @@ if not defined _LOGGED (
 set "DEBUG="
 set "Q=>nul 2>&1"
 set "QQ=--quiet"
-set "REPO_URL=https://github.com/patientx-cfz/comfyui-rocm"
-set "HASH_FILE=%~dp0.last_update_hash"
+
 for %%A in (%*) do (
     if /I "%%A"=="--debug" (
         set "DEBUG=1"
@@ -489,16 +488,6 @@ goto :install_complete
 :install_complete
 copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 
-:: Record installed commit hash so the updater can detect if already current
-echo [*] Recording installed version...
-set "INSTALLED_HASH="
-for /f "tokens=1" %%i in ('git ls-remote "!REPO_URL!" HEAD 2^>nul') do set "INSTALLED_HASH=%%i"
-if not "!INSTALLED_HASH!"=="" (
-    echo !INSTALLED_HASH!> "!HASH_FILE!"
-    echo [*] Version recorded: !INSTALLED_HASH!
-) else (
-    echo [*] Could not reach GitHub to record version - updater will re-check on first run.
-)
 echo.
 echo ====================================================
 echo   Installation Complete!
