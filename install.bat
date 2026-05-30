@@ -448,16 +448,16 @@ curl -sL -o python_env\Lib\site-packages\sageattention\quant_per_block.py https:
 echo [*] Installing bitsandbytes if available...
 
 :: Skip unsupported architectures for bitsandbytes prebuilt wheels
-for %%G in (gfx90X gfx900 gfx906) do (
+for %%G in (gfx90X) do (
     if /I "!arch!"=="%%G" (
-        echo [*] Skipping bitsandbytes for !arch! - prebuilt wheels are not available, build from source required
+        echo [*] Skipping bitsandbytes for !arch! - prebuilt wheels are not available, build from source required...
         goto :bnb_done
     )
 )
 
-:: Install unified RDNA build
-echo [*] Installing bitsandbytes (unified RDNA build)...
-.\python_env\python.exe -m pip install https://github.com/0xDELUXA/bitsandbytes_win_rocm/releases/download/0.50.0.dev0-py3-rocm7-win_amd64_all/bitsandbytes-0.50.0.dev0-cp312-cp312-win_amd64.whl %QQ%
+:: Install bitsandbytes
+echo [*] Installing bitsandbytes...
+.\python_env\python.exe -m pip install https://github.com/0xDELUXA/bitsandbytes_win_rocm/releases/download/0.50.0.dev0-py3.12-rocm7.14-win_amd64_all/bitsandbytes-0.50.0.dev0-cp312-cp312-win_amd64.whl %QQ%
 if errorlevel 1 goto :install_failed
 
 :bnb_done
