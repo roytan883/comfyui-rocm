@@ -2,6 +2,13 @@
 setlocal enabledelayedexpansion
 title [comfyui-rocm]
 
+:: ANSI color support (Windows 10+)
+for /f %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+set "GREEN=%ESC%[32m"
+set "YELLOW=%ESC%[33m"
+set "CYAN=%ESC%[36m"
+set "RESET=%ESC%[0m"
+
 :: read installed version from hash file
 set "HASH_FILE=%~dp0.last_update_hash"
 set "VERSION=unknown"
@@ -13,9 +20,10 @@ title [comfyui-rocm] - !VERSION!
 set "PYTHON_DIR=%~dp0python_env"
 set "PATH=%PYTHON_DIR%;%PYTHON_DIR%\Scripts;%PATH%"
 
+echo %GREEN%[INFO]%RESET% Initializing rocm-sdk...
 .\python_env\scripts\rocm-sdk init >nul 2>&1
 if errorlevel 1 (
-    echo [!] Warning: rocm-sdk init failed. ROCm may not be set up correctly.
+    echo %YELLOW%[WARN]%RESET% rocm-sdk init failed. ROCm may not be set up correctly.
 )
 
 for /f "delims=" %%i in ('rocm-sdk path --root') do set "HIP_PATH=%%i"
@@ -23,15 +31,23 @@ set "ROCM_PATH=%HIP_PATH%"
 
 :: ------------------- detect GPU architecture for conditional settings ---------------- ::
 
+echo %GREEN%[INFO]%RESET% Detecting GPU architecture...
 set "GPU_ARCH="
 for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>nul') do set "GPU_ARCH=%%A"
 set "IS_LEGACY_GPU=0"
 if /I "!GPU_ARCH!"=="gfx101X" set "IS_LEGACY_GPU=1"
 if /I "!GPU_ARCH!"=="gfx103X" set "IS_LEGACY_GPU=1"
 
+if "!GPU_ARCH!"=="" (
+    echo %YELLOW%[WARN]%RESET% Could not detect GPU architecture.
+) else (
+    echo %GREEN%[INFO]%RESET% GPU arch: %CYAN%!GPU_ARCH!%RESET%
+)
+
 :: disable Flash and MemEff SDP backends on RDNA1/2 only
 
 if "!IS_LEGACY_GPU!"=="1" (
+    echo %GREEN%[INFO]%RESET% Legacy GPU detected — applying RDNA1/2 SDP overrides.
     set TORCH_BACKENDS_CUDA_FLASH_SDP_ENABLED=0
     set TORCH_BACKENDS_CUDA_MEM_EFF_SDP_ENABLED=0
     set TORCH_BACKENDS_CUDA_MATH_SDP_ENABLED=1
@@ -92,8 +108,8 @@ if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
 
 :: ------------------------------------------------------------------------------------- ::
 
-echo ::: [comfyui-rocm] [version: !VERSION!] is starting with these parameters ::: 
-echo ::: [ !PARAMS! ] :::
+set "DISPLAY_PARAMS=%PARAMS:--=%"
+echo %GREEN%[INFO]%RESET% [comfyui-rocm] %CYAN%!VERSION!%RESET% starting with: [ %CYAN%!DISPLAY_PARAMS!%RESET% ]
 echo.
 python_env\python.exe main.py %PARAMS%
 
