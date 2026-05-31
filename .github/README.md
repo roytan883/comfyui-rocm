@@ -8,6 +8,7 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 # NEW #
 
+* Added color-coding to both installer and starter bat file.
 * Added logging and `--debug` option for `install.bat` 
 * Thanks to the latest updates on [TheRock](https://github.com/ROCm/TheRock) , we now have full gpu support from gcn5/vega to the latest RDNA4 gpu's.
 * Added a simple updater, run it to keep your install of comfyui-rocm updated.
@@ -47,11 +48,12 @@ install.bat
 * If you want detailed output to see what is installed / downloaded during installation process , use `install.bat --debug` instead.
 * This "hopefully" auto-detects your AMD GPU and installs the correct ROCm & PyTorch packages. I only have an RX 6800 and obviously cannot test other AMD GPUs.
 * This is partly portable and doesn't need Python installed on the system. You can try it separately with `ComfyUI-Zluda` for example, without interfering with your existing setup. It also doesn't need HIP installed, as those components are now installed into the venv with the ROCm packages.
-* You can use `comfyui-rocm.bat`, or put a shortcut to it on your desktop, to run the app later. My recommendation is to make a copy of `comfyui-rocm.bat` with another name and modify that copy, so that when updating you won't run into trouble.
+* Running `comfyui-rocm-updater.bat` at least for once is recommended, this would make sure you are using latest version as of installing. And run it regularly to keep the app up-to-date.
+* You can use `comfyui-user.bat`, or put a shortcut to it on your desktop, to run the app later. My recommendation is to make a copy of `comfyui-user.bat` with another name and modify that copy, so that when updating you won't run into trouble. (don't make changes in the `comfyui-rocm.bat` instead on `comfyui-user.bat`)
 * At the moment, there are some startup options I am using with my RX 6800 in the batch file. You can edit them; I'll try to add more options in there.
 
 ## First-Time Launch
-* If you have completed every previous step correctly, it will install without errors. You can start the app with `comfyui-rocm.bat`. If you already have checkpoints, copy them into your `models/checkpoints` folder so you can use them with ComfyUI's default workflows. You can use [ComfyUI's Extra Model Paths YAML file](https://docs.comfy.org/development/core-concepts/models) to specify custom folders.
+* If you have completed every previous step correctly, it will install without errors. You can start the app with `comfyui-user.bat`. If you already have checkpoints, copy them into your `models/checkpoints` folder so you can use them with ComfyUI's default workflows. You can use [ComfyUI's Extra Model Paths YAML file](https://docs.comfy.org/development/core-concepts/models) to specify custom folders.
 
 ## Troubleshooting
 ### Incompatibilities
