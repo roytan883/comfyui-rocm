@@ -30,7 +30,6 @@ for /f "delims=" %%i in ('rocm-sdk path --root') do set "HIP_PATH=%%i"
 set "ROCM_PATH=%HIP_PATH%"
 
 :: ------------------- detect GPU architecture for conditional settings ---------------- ::
-
 echo %GREEN%[INFO]%RESET% Detecting GPU architecture...
 set "GPU_ARCH="
 for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>nul') do set "GPU_ARCH=%%A"
@@ -54,11 +53,9 @@ if "!IS_LEGACY_GPU!"=="1" (
 ) else (
     set TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1
 )
-
 :: ------------------------------------------------------------------------------------- ::
 
 :: ------------------------- cache and database paths (relative) ------------------------::
-
 set "PYTORCH_TUNABLEOP_CACHE_DIR=%~dp0tunableop-cache"
 
 set "TRITON_CACHE_DIR=%~dp0triton-cache"
@@ -78,12 +75,10 @@ if /I NOT "!GPU_ARCH!"=="gfx1100" (
     set "ROCBLAS_TENSILE_DB_PATH=%~dp0python_env\Lib\site-packages\_rocm_sdk_devel\bin\rocblas"
     set "ROCBLAS_TENSILE_LIBPATH=%~dp0python_env\Lib\site-packages\_rocm_sdk_devel\bin\rocblas\library"
 )
-
 :: ------------------------------------------------------------------------------------- ::
 
 :: ------------------- CHANGE THESE IF YOU KNOW WHAT YOU ARE DOING --------------------- ::
 :: ---------------------- advanced settings (miopen , triton etc.) --------------------- ::
-
 set COMFYUI_ENABLE_MIOPEN=0
 set FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
 set MIOPEN_FIND_ENFORCE=1
@@ -95,7 +90,6 @@ set MIOPEN_LOG_LEVEL=0
 set MIOPEN_ENABLE_LOGGING_CMD=0
 set TRITON_PRINT_AUTOTUNING=0
 set TRITON_CACHE_AUTOTUNING=0
-
 :: ------------------------------------------------------------------------------------- ::
 
 :: ------------------- CHANGE THESE IF YOU KNOW WHAT YOU ARE DOING --------------------- ::
@@ -107,6 +101,21 @@ set PARAMS=--disable-api-nodes --cache-none --disable-smart-memory --disable-pin
 if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
 
 :: ------------------------------------------------------------------------------------- ::
+
+:: --------------------------- keeping the necessary packages up-to-date --------------- ::
+echo %GREEN%[INFO]%RESET% Syncing tracked packages from requirements.txt...
+for %%P in (comfyui-frontend-package comfyui-workflow-templates comfyui-embedded-docs comfy-kitchen comfy-aimdo) do (
+    for /f "tokens=1,2 delims==" %%A in ('findstr /i "^%%P==" "%~dp0requirements.txt"') do (
+        .\python_env\python.exe -m pip show %%A 2>nul | findstr /i "^Version:" > "%TEMP%\pkgver.txt"
+        set INSTALLED=
+        for /f "tokens=2" %%V in (%TEMP%\pkgver.txt) do set INSTALLED=%%V
+        if not "!INSTALLED!"=="%%B" (
+            .\python_env\python.exe -m pip install "%%A==%%B" --quiet 2>nul
+            echo %YELLOW%[UPDATED]%RESET% %%A  !INSTALLED! ^> %%B
+        )
+    )
+)
+:: ------------------------------------------------------------------------------------ ::
 
 set "DISPLAY_PARAMS=%PARAMS:--=%"
 echo %GREEN%[INFO]%RESET% [comfyui-rocm] %CYAN%!VERSION!%RESET% starting with: [ %CYAN%!DISPLAY_PARAMS!%RESET% ]
