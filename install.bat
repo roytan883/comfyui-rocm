@@ -238,12 +238,12 @@ if "!arch!"=="gfx110X" (
 
 if "!arch!"=="gfx120X" (
     echo %GREEN%[*]%RESET% Installing ROCm for RDNA4 ^(gfx120X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-dgpu/ --no-warn-script-location %Q%
+    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-all/ --no-warn-script-location %Q%
     if errorlevel 1 goto :install_failed
     .\python_env\scripts\rocm-sdk init %Q%
     if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
     echo %GREEN%[*]%RESET% Installing PyTorch for RDNA4 ^(gfx120X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-dgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
+    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
     if errorlevel 1 goto :install_failed
     goto :install_requirements
 )
