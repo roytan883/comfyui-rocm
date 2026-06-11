@@ -8,6 +8,7 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 # NEW #
 
+* Added my fork of the [ComfyUI-INT8-Fast](https://github.com/BobJohnson24/ComfyUI-INT8-Fast) , [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) ; which essentially lets us use int8 quantized models with triton ; one needs bf16 version of the model they need to quantize or can download various prequantized models on huggingface or civitai. With every model I've tested everyone one of them was faster -at least 25 to 40 percent- and better or identical quality then fp8 quantizations. Sage-attention can be added with models that support it by starting comfyui with --use-sage-attention or using the "patch sage attention" node from kjnodes. This really helps with the gen times. 
 * Added color-coding to both installer and starter bat file.
 * Added logging and `--debug` option for `install.bat` 
 * Thanks to the latest updates on [TheRock](https://github.com/ROCm/TheRock) , we now have full gpu support from gcn5/vega to the latest RDNA4 gpu's.
