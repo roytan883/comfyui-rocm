@@ -357,6 +357,7 @@ if not exist comfyui-manager git clone https://github.com/Comfy-Org/ComfyUI-Mana
 if not exist CFZ-SwitchMenu git clone https://github.com/patientx/CFZ-SwitchMenu.git %QQ%
 if not exist CFZ-Caching git clone https://github.com/patientx/CFZ-Caching %QQ%
 if not exist ComfyUI-HFRemoteVae git clone https://github.com/kijai/ComfyUI-HFRemoteVae %QQ%
+if not exist ComfyUI-INT8-Fast-ROCM git clonehttps://github.com/patientx/ComfyUI-INT8-Fast-ROCM %QQ%
 cd ..
 
 :: diffusers install for hfremotevae
