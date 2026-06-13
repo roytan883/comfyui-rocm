@@ -67,3 +67,13 @@ install.bat
 - [AMD TheRock Team](https://github.com/ROCm/TheRock)
 - [0xDELUXA](https://github.com/0xDELUXA)
 - [kijai](https://github.com/kijai)
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=patientx-cfz%2Fcomfyui-rocm%2Cpatientx%2FComfyUI-Zluda&type=timeline&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=patientx-cfz/comfyui-rocm%2Cpatientx/ComfyUI-Zluda&type=timeline&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=patientx-cfz/comfyui-rocm%2Cpatientx/ComfyUI-Zluda&type=timeline&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=patientx-cfz/comfyui-rocm%2Cpatientx/ComfyUI-Zluda&type=timeline&legend=bottom-right" />
+ </picture>
+</a>
