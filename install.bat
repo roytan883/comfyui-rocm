@@ -200,141 +200,47 @@ if "!arch!"=="" (
 echo %GREEN%[*]%RESET% Detected GPU architecture: %CYAN%!arch!%RESET%
 
 :: Install PyTorch based on detected GPU
-if "!arch!"=="gfx101X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for RDNA1 ^(gfx101X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx101X-dgpu/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for RDNA1 ^(gfx101X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx101X-dgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
+:: Check if GPU uses legacy URL (gfx942 and gfx950 have working URLs but not in multi-arch yet)
+set "USE_LEGACY_URL=0"
+for %%G in (gfx942 gfx950) do (
+    if /I "!arch!"=="%%G" set "USE_LEGACY_URL=1"
+)
+
+if !USE_LEGACY_URL!==1 (
+    echo %YELLOW%[*]%RESET% Using legacy URL for %CYAN%!arch!%RESET% - Not available in multi-arch yet
+    
+    :: Map legacy GPU to its working URL
+    if /I "!arch!"=="gfx942" (
+        echo %GREEN%[*]%RESET% Installing ROCm for MI300/MI325 ^(gfx942^)...
+        .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx942-dcgpu/ --no-warn-script-location %Q%
+        if errorlevel 1 goto :install_failed
+        .\python_env\scripts\rocm-sdk init %Q%
+        if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
+        echo %GREEN%[*]%RESET% Installing PyTorch for MI300/MI325 ^(gfx942^)...
+        .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx942-dcgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
+        if errorlevel 1 goto :install_failed
+    )
+    
+    if /I "!arch!"=="gfx950" (
+        echo %GREEN%[*]%RESET% Installing ROCm for MI350/MI355 ^(gfx950^)...
+        .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx950-dcgpu/ --no-warn-script-location %Q%
+        if errorlevel 1 goto :install_failed
+        .\python_env\scripts\rocm-sdk init %Q%
+        if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
+        echo %GREEN%[*]%RESET% Installing PyTorch for MI350/MI355 ^(gfx950^)...
+        .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx950-dcgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
+        if errorlevel 1 goto :install_failed
+    )
+    
     goto :install_requirements
 )
 
-if "!arch!"=="gfx103X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for RDNA2 ^(gfx103X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx103X-all/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for RDNA2 ^(gfx103X^)...
-    .\python_env\python.exe -m pip install --pre --index-url https://rocm.nightlies.amd.com/v2-staging/gfx103X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
+:: For all other GPUs, use the new multi-arch URL
+echo %GREEN%[*]%RESET% Using multi-arch ROCm for %CYAN%!arch!%RESET%
+.\python_env\python.exe -m pip install "torch[device-!arch!]" "torchvision[device-!arch!]" torchaudio rocm-sdk-devel --index-url https://rocm.nightlies.amd.com/whl-multi-arch/ --no-warn-script-location %Q%
+if errorlevel 1 goto :install_failed
 
-if "!arch!"=="gfx110X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for RDNA3 ^(gfx110X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx110X-all/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for RDNA3 ^(gfx110X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx110X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx120X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for RDNA4 ^(gfx120X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-all/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for RDNA4 ^(gfx120X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx120X-all/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx90X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for Radeon Pro VII ^(gfx90X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx90X-dcgpu/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for Radeon Pro VII ^(gfx90X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx90X-dcgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx94X" (
-    echo %GREEN%[*]%RESET% Installing ROCm for MI300/MI325 ^(gfx94X^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx94X-dcgpu/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for MI300/MI325 ^(gfx94X^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx94X-dcgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx950" (
-    echo %GREEN%[*]%RESET% Installing ROCm for MI350/MI355 ^(gfx950^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx950-dcgpu/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for MI350/MI355 ^(gfx950^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx950-dcgpu/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx900" (
-    echo %GREEN%[*]%RESET% Installing ROCm for Vega 10 / GCN5 ^(gfx900^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx900/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for Vega 10 / GCN5 ^(gfx900^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx900/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx906" (
-    echo %GREEN%[*]%RESET% Installing ROCm for Vega 20 / Radeon VII ^(gfx906^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx906/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for Vega 20 / Radeon VII ^(gfx906^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx906/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx908" (
-    echo %GREEN%[*]%RESET% Installing ROCm for Arcturus / MI100 ^(gfx908^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx908/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for Arcturus / MI100 ^(gfx908^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx908/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-if "!arch!"=="gfx90a" (
-    echo %GREEN%[*]%RESET% Installing ROCm for Aldebaran / MI200 ^(gfx90a^)...
-    .\python_env\python.exe -m pip install rocm[devel,libraries] --index-url https://rocm.nightlies.amd.com/v2-staging/gfx90a/ --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    .\python_env\scripts\rocm-sdk init %Q%
-    if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: rocm-sdk init failed, continuing anyway...
-    echo %GREEN%[*]%RESET% Installing PyTorch for Aldebaran / MI200 ^(gfx90a^)...
-    .\python_env\python.exe -m pip install --index-url https://rocm.nightlies.amd.com/v2-staging/gfx90a/ torch torchaudio torchvision --no-warn-script-location %Q%
-    if errorlevel 1 goto :install_failed
-    goto :install_requirements
-)
-
-echo %RED%[!]%RESET% Unknown GPU architecture detected: %CYAN%!arch!%RESET%
-pause
-exit /b 1
+goto :install_requirements
 
 :install_requirements
 echo.
@@ -380,7 +286,7 @@ curl -sL -o python_env\Lib\site-packages\sageattention\quant_per_block.py https:
 echo %GREEN%[*]%RESET% Installing bitsandbytes if available...
 
 :: Skip unsupported architectures for bitsandbytes prebuilt wheels
-for %%G in (gfx90X) do (
+for %%G in (gfx90X gfx942 gfx950) do (
     if /I "!arch!"=="%%G" (
         echo %YELLOW%[*]%RESET% Skipping bitsandbytes for %CYAN%!arch!%RESET% - prebuilt wheels not available, build from source required...
         goto :bnb_done
@@ -409,13 +315,22 @@ if errorlevel 1 echo %YELLOW%[!]%RESET% Warning: aiter install failed, flash-att
 echo.
 echo %GREEN%[*]%RESET% Verifying installation...
 echo.
-.\python_env\python.exe -c "import torch; print(f'PyTorch Version: {torch.__version__}'); print(f'ROCm Available: {torch.cuda.is_available()}'); print(f'ROCm Version: {torch.version.hip if torch.cuda.is_available() else \"N/A\"}')"
-if errorlevel 1 (
-    echo %YELLOW%[!]%RESET% Warning: Installation verification failed
-    echo %YELLOW%[!]%RESET% PyTorch may not be properly installed
-)
+echo %CYAN%------------------------------------------------------------%RESET%
+echo %CYAN%  PYTORCH CONFIGURATION%RESET%
+echo %CYAN%------------------------------------------------------------%RESET%
 
-goto :install_complete
+.\python_env\python.exe -c "import torch; print(f'  PyTorch Version: {torch.__version__}'); print(f'  ROCm Available: {torch.cuda.is_available()}'); print(f'  HIP Version: {torch.version.hip if torch.cuda.is_available() else \"N/A\"}'); print(f'  Device Count: {torch.cuda.device_count() if torch.cuda.is_available() else 0}'); print(f'  Device Name: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"No ROCm device detected\"}')"
+
+echo %RED%  GPU Architecture: !arch!%RESET%
+echo %RED%  Status: Ready for use%RESET%
+
+echo.
+echo %GREEN%====================================================%RESET%
+echo %GREEN%  Installation Complete!%RESET%
+echo %GREEN%  Running comfyui-rocm-updater.bat once is recommended!%RESET%
+echo %GREEN%  Run "comfyui-user.bat" to start comfyui-rocm%RESET%
+echo %GREEN%====================================================%RESET%
+goto :end
 
 :install_complete
 copy comfyui-rocm.bat comfyui-user.bat /y %Q%
@@ -423,6 +338,7 @@ copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 echo.
 echo %GREEN%====================================================%RESET%
 echo %GREEN%  Installation Complete!%RESET%
+echo %GREEN%  Running comfyui-rocm-updater.bat once is recommended!%RESET%
 echo %GREEN%  Run "comfyui-user.bat" to start comfyui-rocm%RESET%
 echo %GREEN%====================================================%RESET%
 goto :end
