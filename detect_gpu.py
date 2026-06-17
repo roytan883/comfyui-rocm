@@ -6,8 +6,9 @@ import os
 # Format: (model_list, gfx_code, architecture_name, supported)
 GPU_TO_GFX = [
     # RDNA4 (gfx12xx)
-    (['rx 9060'], 'gfx120X', 'RDNA 4', True),
-    (['rx 9070', 'r9700', 'r9600'], 'gfx120X', 'RDNA 4', True),
+    (['rx 9060'], 'gfx1200', 'RDNA 4', True),
+    (['rx 9070', 'r9700', 'r9600'], 'gfx1201', 'RDNA 4', True),
+    (['gfx12-0'], 'gfx12-0', 'RDNA 4', True),
     
     # RDNA3.5 (gfx115x)
     (['890m'], 'gfx1150', 'Strix Point', True),
@@ -16,30 +17,28 @@ GPU_TO_GFX = [
     (['gfx1153'], 'gfx1153', 'RDNA 3.5', True),
     
     # RDNA3 (gfx110x)
-    (['rx 7900', 'w7900', 'w7800'], 'gfx110X', 'RDNA 3', True),
-    (['rx 7800', 'rx 7700', 'w7700'], 'gfx110X', 'RDNA 3', True),
-    (['rx 7700s', 'rx 7650', 'rx 7600', 'w7600', 'w7500', 'rx 7400', 'w7400'], 'gfx110X', 'RDNA 3', True),
-    (['780m', '760m', '740m'], 'gfx110X', 'RDNA 3', True),
+    (['rx 7900', 'w7900', 'w7800'], 'gfx1100', 'RDNA 3', True),
+    (['rx 7800', 'rx 7700', 'w7700'], 'gfx1101', 'RDNA 3', True),
+    (['rx 7700s', 'rx 7650', 'rx 7600', 'w7600', 'w7500', 'rx 7400', 'w7400'], 'gfx1102', 'RDNA 3', True),
+    (['780m', '760m', '740m'], 'gfx1103', 'RDNA 3', True),
        
-    # RDNA2 (gfx103x) - SUPPORTED
-    (['rx 6950', 'rx 6900', 'rx 6800', 'w6800', 'v620'], 'gfx103X', 'RDNA 2', True),  # gfx1030
-    (['rx 6750', 'rx 6700', 'rx 6800m', 'rx 6700m', 'rx 6800s', 'rx 6700s'], 'gfx103X', 'RDNA 2', True),  # gfx1031
-    (['rx 6650', 'rx 6600', 'w6600', 'rx 6650m', 'rx 6600m', 'rx 6600s'], 'gfx103X', 'RDNA 2', True),  # gfx1032
-    (['rx 6500', 'w6500', 'rx 6500m'], 'gfx103X', 'RDNA 2', True),  # gfx1034
-
-    # RDNA2 (gfx103x) - added support -0422
-    (['680m', '660m'], 'gfx103X', 'RDNA 2', True),   # gfx1035 - iGPU
-    (['610m'], 'gfx103X', 'RDNA 2', True),            # gfx1036 - iGPU
-    (['rx 6550', 'rx 6450', 'rx 6400', 'w6400', 'rx 6300', 'w6300'], 'gfx103X', 'RDNA 2', True),
+    # RDNA2 (gfx103x)
+    (['rx 6950', 'rx 6900', 'rx 6800', 'w6800', 'v620'], 'gfx1030', 'RDNA 2', True),
+    (['rx 6750', 'rx 6700', 'rx 6800m', 'rx 6700m', 'rx 6800s', 'rx 6700s'], 'gfx1031', 'RDNA 2', True),
+    (['rx 6650', 'rx 6600', 'w6600', 'rx 6650m', 'rx 6600m', 'rx 6600s'], 'gfx1032', 'RDNA 2', True),
+    (['rx 6500', 'w6500', 'rx 6500m'], 'gfx1034', 'RDNA 2', True),
+    (['680m', '660m'], 'gfx1035', 'RDNA 2', True),
+    (['610m'], 'gfx1036', 'RDNA 2', True),
+    (['rx 6550', 'rx 6450', 'rx 6400', 'w6400', 'rx 6300', 'w6300'], 'gfx1033', 'RDNA 2', True),
 
     # RDNA1 (gfx101x)
-    (['rx 5700', 'rx 5600'], 'gfx101X', 'RDNA 1', True),
-    (['rx 5500', 'radeon pro v520'], 'gfx101X', 'RDNA 1', True),
+    (['rx 5700', 'rx 5600'], 'gfx1010', 'RDNA 1', True),
+    (['rx 5500', 'radeon pro v520'], 'gfx1011', 'RDNA 1', True),
     
     # Data Center / Enterprise GPUs
     (['radeon pro vii'], 'gfx90X', 'Radeon Pro VII', True),
-    (['mi300a', 'mi300x', 'mi325x'], 'gfx94X', 'MI300/MI325', True),
-    (['mi350x', 'mi355x'], 'gfx950', 'MI350/MI355', True),
+    (['mi300a', 'mi300x', 'mi325x'], 'gfx942', 'MI300/MI325', True),  # Now supported via legacy URL
+    (['mi350x', 'mi355x'], 'gfx950', 'MI350/MI355', True),  # Now supported via legacy URL
 
     # GCN5 / Vega (gfx900/906/908/90a)
     (['rx vega', 'vega 64', 'vega 56', 'vega frontier'], 'gfx900', 'Vega 10 / GCN5', True),
