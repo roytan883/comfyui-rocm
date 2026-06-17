@@ -8,16 +8,20 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 # NEW #
 
-* Added my fork of the [ComfyUI-INT8-Fast](https://github.com/BobJohnson24/ComfyUI-INT8-Fast) , [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) ; which essentially lets us use int8 quantized models with triton ; one needs bf16 version of the model they need to quantize or can download various prequantized models on huggingface or civitai. With every model I've tested everyone one of them was faster -at least 25 to 40 percent- and better or identical quality then fp8 quantizations. Sage-attention can be added with models that support it by starting comfyui with --use-sage-attention or using the "patch sage attention" node from kjnodes. This really helps with the gen times. 
+* Updated the rocm & pytorch builds to the multi-arch builds, this shouldn't cause many problems, so far only gfx942 and gfx950 doesn't seem to have windows builds yet, they are set to use the old urls for the time being.Obviously I can't test for every gpu out there so please open an issue if your gpu isn't getting recognized by this new system.
+  
+* Added my fork of the [ComfyUI-INT8-Fast](https://github.com/BobJohnson24/ComfyUI-INT8-Fast) , [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) ; which essentially lets us use int8 quantized models with triton ; one needs bf16 version of the model they need to quantize or can download various prequantized models on huggingface or civitai. With every model I've tested everyone one of them was faster -at least 25 to 40 percent- and better or identical quality then fp8 quantizations. Sage-attention can be added with models that support it by starting comfyui with --use-sage-attention or using the "patch sage attention" node from kjnodes. This really helps with the gen times.
+  
 * Added color-coding to both installer and starter bat file.
+  
 * Added logging and `--debug` option for `install.bat` 
-* Thanks to the latest updates on [TheRock](https://github.com/ROCm/TheRock) , we now have full gpu support from gcn5/vega to the latest RDNA4 gpu's.
-* Added a simple updater, run it to keep your install of comfyui-rocm updated.
-* Added some tested workflows inside "sample-workflows" folder. Wan 2.2 i2v & ltxv2.3 distill model only and 2-stage dev model using distill lora workflows are added at the moment.
 
 <details>
 <summary><strong> :: Older news :: </strong></summary>
 
+* Thanks to the latest updates on [TheRock](https://github.com/ROCm/TheRock) , we now have full gpu support from gcn5/vega to the latest RDNA4 gpu's.
+* Added a simple updater, run it to keep your install of comfyui-rocm updated.
+* Added some tested workflows inside "sample-workflows" folder. Wan 2.2 i2v & ltxv2.3 distill model only and 2-stage dev model using distill lora workflows are added at the moment.
 * Added kijai's hfremotevae nodes. You can now use these for VAE decoding (not encoding) for faster, OOM-free decoding for these model types: SD 1.5, SDXL, Flux, HunyuanVideo and their variants (for example, any model that uses the Flux VAE like the z-image model can use this instead).
 
 <img width="1171" height="478" alt="image" src="https://github.com/user-attachments/assets/4d6c19e4-a9c5-4671-8155-92ef08258000" />
