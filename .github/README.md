@@ -6,7 +6,7 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 - Currently supported GPUs: GCN5 /Vega, RDNA1, RDNA2 , RDNA3 and RDNA4.
 
-# NEW #
+# NEWS #
 
 * Updated the rocm & pytorch builds to the multi-arch builds, this shouldn't cause many problems, so far only gfx942 and gfx950 doesn't seem to have windows builds yet, they are set to use the old urls for the time being.Obviously I can't test for every gpu out there so please open an issue if your gpu isn't getting recognized by this new system.
   
