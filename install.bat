@@ -323,17 +323,9 @@ echo %CYAN%------------------------------------------------------------%RESET%
 
 echo %RED%  GPU Architecture: !arch!%RESET%
 echo %RED%  Status: Ready for use%RESET%
-
-echo.
-echo %GREEN%====================================================%RESET%
-echo %GREEN%  Installation Complete!%RESET%
-echo %GREEN%  Running comfyui-rocm-updater.bat once is recommended!%RESET%
-echo %GREEN%  Run "comfyui-user.bat" to start comfyui-rocm%RESET%
-echo %GREEN%====================================================%RESET%
-goto :end
+copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 
 :install_complete
-copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 
 echo.
 echo %GREEN%====================================================%RESET%
