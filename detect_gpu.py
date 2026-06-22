@@ -26,10 +26,11 @@ GPU_TO_GFX = [
     (['rx 6950', 'rx 6900', 'rx 6800', 'w6800', 'v620'], 'gfx1030', 'RDNA 2', True),
     (['rx 6750', 'rx 6700', 'rx 6800m', 'rx 6700m', 'rx 6800s', 'rx 6700s'], 'gfx1031', 'RDNA 2', True),
     (['rx 6650', 'rx 6600', 'w6600', 'rx 6650m', 'rx 6600m', 'rx 6600s'], 'gfx1032', 'RDNA 2', True),
-    (['rx 6500', 'w6500', 'rx 6500m'], 'gfx1034', 'RDNA 2', True),
+    # Note: gfx1033 is Van Gogh (Steam Deck APU only) - reports as "AMD Custom APU 0405"
+    (['rx 6550', 'rx 6500', 'rx 6450', 'rx 6400', 'w6500', 'w6400', 'rx 6300', 'w6300',
+      'rx 6500m', 'rx 6450m', 'rx 6300m', 'rx 6550m', 'rx 6550s'], 'gfx1034', 'RDNA 2', True),
     (['680m', '660m'], 'gfx1035', 'RDNA 2', True),
     (['610m'], 'gfx1036', 'RDNA 2', True),
-    (['rx 6550', 'rx 6450', 'rx 6400', 'w6400', 'rx 6300', 'w6300'], 'gfx1033', 'RDNA 2', True),
 
     # RDNA1 (gfx101x)
     (['rx 5700', 'rx 5600'], 'gfx1010', 'RDNA 1', True),
