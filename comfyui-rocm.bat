@@ -95,7 +95,7 @@ set TRITON_CACHE_AUTOTUNING=0
 :: ------------------- CHANGE THESE IF YOU KNOW WHAT YOU ARE DOING --------------------- ::
 :: ----------------- comfyui-rocm STARTUP OPTIONS : modify to your needs --------------- ::
 
-set PARAMS=--disable-api-nodes --cache-none --disable-smart-memory --disable-pinned-memory --enable-manager-legacy-ui
+set PARAMS=--disable-api-nodes --cache-none --disable-smart-memory --disable-pinned-memory --enable-manager --enable-manager-legacy-ui
 
 :: quad-cross is better for older generation (you can use --use-sage-attention too) 
 if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
