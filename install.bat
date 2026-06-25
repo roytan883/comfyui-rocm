@@ -287,14 +287,6 @@ curl -sL -o python_env\Lib\site-packages\sageattention\quant_per_block.py https:
 
 echo %GREEN%[*]%RESET% Installing bitsandbytes if available...
 
-:: Skip unsupported architectures for bitsandbytes prebuilt wheels
-for %%G in (gfx906 gfx942 gfx950) do (
-    if /I "!arch!"=="%%G" (
-        echo %YELLOW%[*]%RESET% Skipping bitsandbytes for %CYAN%!arch!%RESET% - prebuilt wheels not available, build from source required...
-        goto :bnb_done
-    )
-)
-
 :: Install bitsandbytes
 echo %GREEN%[*]%RESET% Installing bitsandbytes...
 .\python_env\python.exe -m pip install https://github.com/0xDELUXA/bitsandbytes_win_rocm/releases/download/0.50.0.dev0-py3.12-rocm7.14-win_amd64_all/bitsandbytes-0.50.0.dev0-cp312-cp312-win_amd64.whl %QQ%
