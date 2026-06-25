@@ -185,7 +185,7 @@ if not exist "detect_gpu.py" (
     exit /b 1
 )
 
-for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>nul') do (
+for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>"%~dp0gpu_detect_debug.log"') do (
     if not "%%A"=="" (
         set "arch=%%A"
     )
@@ -193,6 +193,8 @@ for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>nul') do (
 
 if "!arch!"=="" (
     echo %RED%[!]%RESET% GPU detection failed or unsupported GPU
+    echo.
+    type "%~dp0gpu_detect_debug.log" 2>nul
     pause
     exit /b 1
 )
@@ -286,7 +288,7 @@ curl -sL -o python_env\Lib\site-packages\sageattention\quant_per_block.py https:
 echo %GREEN%[*]%RESET% Installing bitsandbytes if available...
 
 :: Skip unsupported architectures for bitsandbytes prebuilt wheels
-for %%G in (gfx90X gfx942 gfx950) do (
+for %%G in (gfx906 gfx942 gfx950) do (
     if /I "!arch!"=="%%G" (
         echo %YELLOW%[*]%RESET% Skipping bitsandbytes for %CYAN%!arch!%RESET% - prebuilt wheels not available, build from source required...
         goto :bnb_done
