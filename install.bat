@@ -267,6 +267,7 @@ if not exist CFZ-Caching git clone https://github.com/patientx/CFZ-Caching %QQ%
 if not exist ComfyUI-HFRemoteVae git clone https://github.com/kijai/ComfyUI-HFRemoteVae %QQ%
 if not exist ComfyUI-INT8-Fast-ROCM git clone https://github.com/patientx/ComfyUI-INT8-Fast-ROCM %QQ%
 cd ..
+copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 
 :: diffusers install for hfremotevae
 .\python_env\python.exe -m pip install diffusers %QQ%
@@ -317,8 +318,6 @@ echo %CYAN%------------------------------------------------------------%RESET%
 
 echo %RED%  GPU Architecture: !arch!%RESET%
 echo %RED%  Status: Ready for use%RESET%
-copy comfyui-rocm.bat comfyui-user.bat /y %Q%
-
 :install_complete
 
 echo.
