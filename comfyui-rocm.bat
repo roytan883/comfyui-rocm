@@ -34,8 +34,8 @@ echo %GREEN%[INFO]%RESET% Detecting GPU architecture...
 set "GPU_ARCH="
 for /f "delims=" %%A in ('.\python_env\python.exe detect_gpu.py 2^>nul') do set "GPU_ARCH=%%A"
 set "IS_LEGACY_GPU=0"
-if /I "!GPU_ARCH!"=="gfx101X" set "IS_LEGACY_GPU=1"
-if /I "!GPU_ARCH!"=="gfx103X" set "IS_LEGACY_GPU=1"
+if /I "!GPU_ARCH:~0,6!"=="gfx101" set "IS_LEGACY_GPU=1"
+if /I "!GPU_ARCH:~0,6!"=="gfx103" set "IS_LEGACY_GPU=1"
 
 if "!GPU_ARCH!"=="" (
     echo %YELLOW%[WARN]%RESET% Could not detect GPU architecture.
