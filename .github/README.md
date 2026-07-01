@@ -8,6 +8,8 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 # NEWS #
 
+* The included [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) now converts directly to a comfyui native loader compatible int8-convrot format. At the moment the native loader is either slow or have problems with AMD GPUs. So for better speed and compability with AMD just use this nodes loader. The only odd model out of all I tested was qwen-image-edit and to make it work I had to choose dtype as float32 manually. Every model I tested is faster than native loader (if it works without crashing)
+
 * Updated the rocm & pytorch builds to the multi-arch builds, this shouldn't cause many problems, so far only gfx942 and gfx950 doesn't seem to have windows builds yet, they are set to use the old urls for the time being.Obviously I can't test for every gpu out there so please open an issue if your gpu isn't getting recognized by this new system.
   
 * Added my fork of the [ComfyUI-INT8-Fast](https://github.com/BobJohnson24/ComfyUI-INT8-Fast) , [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) ; which essentially lets us use int8 quantized models with triton ; one needs bf16 version of the model they need to quantize or can download various prequantized models on huggingface or civitai. With every model I've tested everyone one of them was faster -at least 25 to 40 percent- and better or identical quality then fp8 quantizations. Sage-attention can be added with models that support it by starting comfyui with --use-sage-attention or using the "patch sage attention" node from kjnodes. This really helps with the gen times.
