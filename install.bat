@@ -273,7 +273,7 @@ copy comfyui-rocm.bat comfyui-user.bat /y %Q%
 .\python_env\python.exe -m pip install diffusers %QQ%
 
 echo %GREEN%[*]%RESET% Installing triton - sageattention^(v1^)...
-.\python_env\python.exe -m pip install triton-windows==3.7.1.post27 %QQ%
+.\python_env\python.exe -m pip install triton-windows==3.6.0.post26 %QQ%
 if errorlevel 1 goto :install_failed
 .\python_env\python.exe -m pip install sageattention==1.0.6 %QQ%
 if errorlevel 1 goto :install_failed
