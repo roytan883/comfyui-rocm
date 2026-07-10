@@ -95,7 +95,11 @@ set TRITON_CACHE_AUTOTUNING=0
 :: ------------------- CHANGE THESE IF YOU KNOW WHAT YOU ARE DOING --------------------- ::
 :: ----------------- comfyui-rocm STARTUP OPTIONS : modify to your needs --------------- ::
 
-set PARAMS=--disable-api-nodes --cache-none --disable-smart-memory --disable-pinned-memory --enable-manager --enable-manager-legacy-ui
+:: triton-backend works for rdna3 & rdna4 BUT the included ComfyUI-INT8-Fast-ROCM crashes comfy with it enabled AND that node is faster than native even on rdna4 so it is better to use than native nodes
+:: so triton-backend should be disabled for newer gpu's (it already won't activate for older gens) , if you update triton-windows to >= 3.7.1.post27 it activates itself for rdna3 and above. 
+:: if you have rdna3 or rdna4 and despite them being slower, you want to continue using native nodes, uninstall triton-windows. OR let it be disabled and use the custom node.
+
+set PARAMS=--disable-api-nodes --cache-none --disable-smart-memory --disable-pinned-memory --enable-manager --enable-manager-legacy-ui --disable-triton-backend
 
 :: quad-cross is better for older generation (you can use --use-sage-attention too) 
 if "!IS_LEGACY_GPU!"=="1" set "PARAMS=%PARAMS% --use-quad-cross-attention"
