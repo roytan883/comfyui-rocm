@@ -8,6 +8,7 @@ Windows-only version of ComfyUI that uses AMD's official ROCm and PyTorch librar
 
 # NEWS #
 
+* You can use int4 models & int8 clips models with the [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) (have to update it to the latest version) Details in its readme.
 * The included [ComfyUI-INT8-Fast-ROCM](https://github.com/patientx/ComfyUI-INT8-Fast-ROCM) now converts directly to a comfyui native loader compatible int8-convrot format. At the moment the native loader is either slow or have problems with AMD GPUs. So for better speed and compability with AMD just use this nodes loader. The only odd model out of all I tested was qwen-image-edit and to make it work I had to choose dtype as float32 manually. Every model I tested is faster than native loader (if one can make native loader work with patches etc). So please try the custom loader.
   <img width="446" height="306" alt="image" src="https://github.com/user-attachments/assets/cf103398-404c-4ff7-8f92-96704e8f427d" />
 
