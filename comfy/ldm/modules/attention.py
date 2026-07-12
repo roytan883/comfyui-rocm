@@ -716,7 +716,7 @@ _is_rdna1_or_rdna2 = (
 
 if not _is_rdna1_or_rdna2:
     try:
-        @torch.library.custom_op("flash_attention::flash_attn", mutates_args=())
+        @torch.library.custom_op("comfy::flash_attn", mutates_args=())
         def flash_attn_wrapper(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor,
                         dropout_p: float = 0.0, causal: bool = False, softmax_scale: float = -1.0) -> torch.Tensor:
             softmax_scale_arg = None if softmax_scale == -1.0 else softmax_scale
@@ -733,6 +733,7 @@ if not _is_rdna1_or_rdna2:
                         dropout_p: float = 0.0, causal: bool = False, softmax_scale: float = -1.0) -> torch.Tensor:
             assert False, f"Could not define flash_attn_wrapper: {FLASH_ATTN_ERROR}"
 else:
+    
     def flash_attn_wrapper(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor,
                     dropout_p: float = 0.0, causal: bool = False, softmax_scale: float = -1.0) -> torch.Tensor:
         softmax_scale_arg = None if softmax_scale == -1.0 else softmax_scale
